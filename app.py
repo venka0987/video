@@ -24,20 +24,8 @@ source_img = gr.Image(source="upload", type="numpy")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def infer(prompt, init_image): 
-    init_image = Image.open(BytesIO(init_image)).convert("RGB")
-    init_image = init_image.resize((768, 512))
-    #image = pipe(prompt, init_image=init_image)["sample"][0]
-    images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
-    images = []
-    safe_image = Image.open(r"unsafe.png")
-    for i, image in enumerate(images_list["sample"]):
-        if(images_list["nsfw_content_detected"][i]):
-            images.append(safe_image)
-        else:
-            images.append(image)
-    
-    return images
-
+    print(init_image)
+    return init_image
 print("Great sylvain ! Everything is working fine !")
 
 title="Stable Diffusion CPU"
