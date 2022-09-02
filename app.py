@@ -4,7 +4,7 @@ import gradio as gr
 
 from PIL import Image
 import numpy as np
-#from io import BytesIO
+from io import BytesIO
 import os
 MY_SECRET_TOKEN=os.environ.get('HF_TOKEN_SD')
 
@@ -26,17 +26,9 @@ source_img = gr.Image(image_mode="RGB",
 
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
-def resize(width,img):
-  basewidth = width
-  img = Image.open(img)
-  wpercent = (basewidth/float(img.size[0]))
-  hsize = int((float(img.size[1])*float(wpercent)))
-  img = img.resize((basewidth,hsize), Image.ANTIALIAS)
-  return img
-
 def infer(prompt, init_image): 
-    init_image = resize(512,init_image)
-    init_image.save("init_image.png")
+    init_image = Image.open(BytesIO(init_image)).convert("RGB")
+    init_image = init_image.resize((768, 512))
     #image = pipe(prompt, init_image=init_image)["sample"][0]
     images_list = pipe([prompt] * 2, init_image="init_image.png", strength=0.75)
     images = []
