@@ -20,6 +20,12 @@ device="cpu"
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 pipe.to(device)
 
+source_img = gr.Image(image_mode="RGB",
+        source="upload",
+        type="file",
+        shape=None,
+        invert_colors=False)
+
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def resize(width,img):
@@ -50,4 +56,4 @@ print("Great sylvain ! Everything is working fine !")
 title="Stable Diffusion CPU"
 description="Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
 
-gr.Interface(fn=infer, inputs=["text","image"], outputs=gallery,title=title,description=description).launch(enable_queue=True)
+gr.Interface(fn=infer, inputs=["text", source_img], outputs=gallery,title=title,description=description).launch(enable_queue=True)
