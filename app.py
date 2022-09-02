@@ -17,6 +17,12 @@ YOUR_TOKEN=MY_SECRET_TOKEN
 
 device="cpu"
 
+prompt_pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
+prompt_pipe.to(device)
+
+img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
+img_pipe.to(device)
+
 source_img = gr.Image(source="upload", type="filepath", label="init_img")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
@@ -30,16 +36,12 @@ def resize(height,img):
 
 
 def infer(prompt, source_img): 
-    if(source_img != None):
-        pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
-        pipe.to(device)
+    if(source_img != None):      
         init_image = resize(512,source_img)
         init_image.save('source.png')
-        images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
-    else:
-        pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
-        pipe.to(device)
-        images_list = pipe([prompt] * 2)
+        images_list = img_pipe([prompt] * 2, init_image=init_image, strength=0.75)
+    else:       
+        images_list = prompt_pipe([prompt] * 2)
     
     images = []
     safe_image = Image.open(r"unsafe.png")
