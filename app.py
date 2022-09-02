@@ -8,7 +8,7 @@ from io import BytesIO
 import os
 MY_SECRET_TOKEN=os.environ.get('HF_TOKEN_SD')
 
-from diffusers import StableDiffusionPipeline
+#from diffusers import StableDiffusionPipeline
 from diffusers import StableDiffusionImg2ImgPipeline
 
 print("hello sylvain")
@@ -17,8 +17,8 @@ YOUR_TOKEN=MY_SECRET_TOKEN
 
 device="cpu"
 
-prompt_pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
-prompt_pipe.to(device)
+#prompt_pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
+#prompt_pipe.to(device)
 
 img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 img_pipe.to(device)
@@ -36,32 +36,22 @@ def resize(height,img):
 
 
 def infer(prompt, source_img): 
-    if(source_img != None):      
-        source_image = resize(512,source_img)
-        source_image.save('source.png')
-        images_list = img_pipe([prompt] * 2, init_image= source_image, strength=0.75)
-        images = []
-        safe_image = Image.open(r"unsafe.png")
-        for i, image in enumerate(images_list["sample"]):
-            if(images_list["nsfw_content_detected"][i]):
-                images.append(safe_image)
-            else:
-                images.append(image)
-    else:       
-        images_list = prompt_pipe([prompt] * 2)
-        images = []
-        safe_image = Image.open(r"unsafe.png")
-        for i, image in enumerate(images_list["sample"]):
-            if(images_list["nsfw_content_detected"][i]):
-                images.append(safe_image)
-            else:
-                images.append(image)
-    
-    
+         
+    source_image = resize(512,source_img)
+    source_image.save('source.png')
+    images_list = img_pipe([prompt] * 2, init_image= source_image, strength=0.75)
+    images = []
+    safe_image = Image.open(r"unsafe.png")
+    for i, image in enumerate(images_list["sample"]):
+        if(images_list["nsfw_content_detected"][i]):
+            images.append(safe_image)
+        else:
+            images.append(image)    
     return images
+
 print("Great sylvain ! Everything is working fine !")
 
-title="Stable Diffusion CPU"
-description="Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
+title="Img2Img Stable Diffusion CPU"
+description="Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
 
 gr.Interface(fn=infer, inputs=["text", source_img], outputs=gallery,title=title,description=description).launch(enable_queue=True)
