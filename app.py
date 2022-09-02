@@ -3,7 +3,7 @@ import gradio as gr
 #from torch import autocast // only for GPU
 
 from PIL import Image
-
+from io import BytesIO
 import os
 MY_SECRET_TOKEN=os.environ.get('HF_TOKEN_SD')
 
@@ -22,7 +22,7 @@ pipe.to(device)
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def infer(prompt, init_image): 
-    init_image = Image.open(init_image).convert("RGB")
+    init_image = Image.open(BytesIO(init_image)).convert("RGB")
     init_image = init_image.resize((512, 512))
     #image = pipe(prompt, init_image=init_image)["sample"][0]
     images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
