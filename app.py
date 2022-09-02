@@ -20,12 +20,23 @@ device="cpu"
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 pipe.to(device)
 
-source_img = gr.Image(source="upload", type="numpy")
+source_img = gr.Image(source="upload", type="pil", label="init_img", shape=(image_size, image_size))
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def infer(prompt, init_image): 
-    print(init_image)
-    return init_image
+    init_image = Image.open(BytesIO(init_image)).convert("RGB")
+    init_image = init_image.resize((768, 512))
+    #image = pipe(prompt, init_image=init_image)["sample"][0]
+    images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
+    images = []
+    safe_image = Image.open(r"unsafe.png")
+    for i, image in enumerate(images_list["sample"]):
+        if(images_list["nsfw_content_detected"][i]):
+            images.append(safe_image)
+        else:
+            images.append(image)
+    
+    return images
 print("Great sylvain ! Everything is working fine !")
 
 title="Stable Diffusion CPU"
