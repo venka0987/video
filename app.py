@@ -21,9 +21,16 @@ pipe.to(device)
 
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
+def resize(width,img):
+  basewidth = width
+  img = Image.open(img)
+  wpercent = (basewidth/float(img.size[0]))
+  hsize = int((float(img.size[1])*float(wpercent)))
+  img = img.resize((basewidth,hsize), Image.ANTIALIAS)
+  return img
+
 def infer(prompt, init_image): 
-    init_image = Image.open(BytesIO(init_image)).convert("RGB")
-    init_image = init_image.resize((512, 512))
+    init_image = resize(512,init_image)
     #image = pipe(prompt, init_image=init_image)["sample"][0]
     images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
     images = []
