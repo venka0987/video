@@ -27,7 +27,7 @@ def infer(prompt, init_image):
     init_image = Image.open(BytesIO(init_image)).convert("RGB")
     init_image = init_image.resize((768, 512))
     #image = pipe(prompt, init_image=init_image)["sample"][0]
-    images_list = pipe([prompt] * 2, init_image="init_image.png", strength=0.75)
+    images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
     images = []
     safe_image = Image.open(r"unsafe.png")
     for i, image in enumerate(images_list["sample"]):
