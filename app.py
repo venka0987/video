@@ -24,7 +24,7 @@ source_img = gr.Image(source="upload")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def infer(prompt, init_image): 
-    init_image = Image.open(BytesIO(init_image)).convert("RGB")
+    init_image = Image.open(init_image).convert("RGB")
     init_image = init_image.resize((768, 512))
     #image = pipe(prompt, init_image=init_image)["sample"][0]
     images_list = pipe([prompt] * 2, init_image="init_image.png", strength=0.75)
