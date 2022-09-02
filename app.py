@@ -20,12 +20,12 @@ device="cpu"
 source_img = gr.Image(source="upload", type="filepath", label="init_img")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
-def resize(width,img):
-  basewidth = width
+def resize(height,img):
+  baseheight = height
   img = Image.open(img)
-  wpercent = (basewidth/float(img.size[0]))
-  hsize = int((float(img.size[1])*float(wpercent)))
-  img = img.resize((basewidth,hsize), Image.Resampling.LANCZOS)
+  hpercent = (baseheight/float(img.size[1]))
+  wsize = int((float(img.size[0])*float(hpercent)))
+  img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
   return img
 
 
