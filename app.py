@@ -31,6 +31,7 @@ def resize(width,img):
 
 def infer(prompt, init_image): 
     init_image = resize(512,init_image)
+    init_image = init_image.save("init_image.png")
     #image = pipe(prompt, init_image=init_image)["sample"][0]
     images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
     images = []
