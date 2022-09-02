@@ -22,7 +22,7 @@ pipe.to(device)
 
 source_img = gr.Image(image_mode="RGB",
         source="upload",
-        type="file",
+        type="filepath",
         shape=None,
         invert_colors=False)
 
