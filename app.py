@@ -23,7 +23,7 @@ device="cpu"
 img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 img_pipe.to(device)
 
-source_img = gr.Image(source="upload", type="filepath", label="init_img")
+source_img = gr.Image(source="upload", type="filepath", label="init_img | 512*512 px")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def resize(height,img):
@@ -37,7 +37,7 @@ def resize(height,img):
 
 def infer(prompt, source_img): 
          
-    source_image = resize(512,source_img)
+    source_image = source_img.resize((512,512), Image.Resampling.LANCZOS)
     source_image.save('source.png')
     images_list = img_pipe([prompt] * 2, init_image=source_image, strength=0.75)
     images = []
