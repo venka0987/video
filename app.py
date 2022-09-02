@@ -37,19 +37,26 @@ def resize(height,img):
 
 def infer(prompt, source_img): 
     if(source_img != None):      
-        init_image = resize(512,source_img)
-        init_image.save('source.png')
+        source_image = resize(512,source_img)
+        source_image.save('source.png')
         images_list = img_pipe([prompt] * 2, init_image=init_image, strength=0.75)
+        images = []
+        safe_image = Image.open(r"unsafe.png")
+        for i, image in enumerate(images_list["sample"]):
+            if(images_list["nsfw_content_detected"][i]):
+                images.append(safe_image)
+            else:
+                images.append(image)
     else:       
         images_list = prompt_pipe([prompt] * 2)
+        images = []
+        safe_image = Image.open(r"unsafe.png")
+        for i, image in enumerate(images_list["sample"]):
+            if(images_list["nsfw_content_detected"][i]):
+                images.append(safe_image)
+            else:
+                images.append(image)
     
-    images = []
-    safe_image = Image.open(r"unsafe.png")
-    for i, image in enumerate(images_list["sample"]):
-        if(images_list["nsfw_content_detected"][i]):
-            images.append(safe_image)
-        else:
-            images.append(image)
     
     return images
 print("Great sylvain ! Everything is working fine !")
