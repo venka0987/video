@@ -1,4 +1,3 @@
-pip install -U git+https://github.com/huggingface/diffusers
 import gradio as gr
 #import torch
 #from torch import autocast // only for GPU
