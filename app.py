@@ -19,7 +19,7 @@ device="cpu"
 
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 pipe.to(device)
-
+image_size = 512
 source_img = gr.Image(source="upload", type="pil", label="init_img", shape=(image_size, image_size))
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
