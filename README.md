@@ -1,6 +1,6 @@
 ---
-title: SD Img2img
-emoji: 📉
+title: Stable Diffusion Img2img CPU
+emoji: 🎨🌠
 colorFrom: green
 colorTo: indigo
 sdk: gradio
