@@ -19,13 +19,22 @@ device="cpu"
 
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 pipe.to(device)
-image_size = 512
-source_img = gr.Image(source="upload", type="filepath", label="init_img", shape=(image_size, image_size))
+
+source_img = gr.Image(source="upload", type="filepath", label="init_img")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
-def infer(prompt, init_image): 
-    init_image.resize((768, 512))
-    #image = pipe(prompt, init_image=init_image)["sample"][0]
+def resize(width,img):
+  basewidth = width
+  img = Image.open(img)
+  wpercent = (basewidth/float(img.size[0]))
+  hsize = int((float(img.size[1])*float(wpercent)))
+  img = img.resize((basewidth,hsize), Image.Resampling.LANCZOS)
+  return img
+
+
+def infer(prompt, source_img): 
+    init_image = resize(512,source_img)
+    init_image.save('source.png')
     images_list = pipe([prompt] * 2, init_image=init_image, strength=0.75)
     images = []
     safe_image = Image.open(r"unsafe.png")
