@@ -39,7 +39,7 @@ def infer(prompt, source_img):
          
     source_image = resize(512,source_img)
     source_image.save('source.png')
-    images_list = img_pipe([prompt] * 2, init_image= source_image, strength=0.75)
+    images_list = img_pipe([prompt] * 2, init_image=source_image, strength=0.75)
     images = []
     safe_image = Image.open(r"unsafe.png")
     for i, image in enumerate(images_list["sample"]):
