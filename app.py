@@ -20,10 +20,7 @@ device="cpu"
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 pipe.to(device)
 
-source_img = gr.Image(image_mode="RGB",
-        source="upload",
-        type="filepath")
-
+source_img = gr.Image(source="upload")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
 def infer(prompt, init_image): 
