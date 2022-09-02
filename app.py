@@ -3,7 +3,8 @@ import gradio as gr
 #from torch import autocast // only for GPU
 
 from PIL import Image
-from io import BytesIO
+import numpy as np
+#from io import BytesIO
 import os
 MY_SECRET_TOKEN=os.environ.get('HF_TOKEN_SD')
 
