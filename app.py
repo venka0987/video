@@ -26,12 +26,13 @@ img_pipe.to(device)
 source_img = gr.Image(source="upload", type="filepath", label="init_img | 512*512 px")
 gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
 
-def resize(height,img):
-  baseheight = height
+def resize(value,img):
+  #baseheight = value
   img = Image.open(img)
-  hpercent = (baseheight/float(img.size[1]))
-  wsize = int((float(img.size[0])*float(hpercent)))
-  img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
+  #hpercent = (baseheight/float(img.size[1]))
+  #wsize = int((float(img.size[0])*float(hpercent)))
+  #img = img.resize((wsize,baseheight), Image.Resampling.LANCZOS)
+  img = img.resize((value,value), Image.Resampling.LANCZOS)
   return img
 
 
@@ -54,4 +55,4 @@ print("Great sylvain ! Everything is working fine !")
 title="Img2Img Stable Diffusion CPU"
 description="Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
 
-gr.Interface(fn=infer, inputs=["text", source_img], outputs=gallery,title=title,description=description).launch(enable_queue=True)
+gr.Interface(fn=infer, inputs=["text", source_img], outputs=gallery,title=title,description=description).queue(max_size=4).launch(enable_queue=True)
