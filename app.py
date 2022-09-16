@@ -55,4 +55,4 @@ print("Great sylvain ! Everything is working fine !")
 title="Img2Img Stable Diffusion CPU"
 description="Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
 
-gr.Interface(fn=infer, inputs=[source_img, "text"], outputs=gallery,title=title,description=description, allow_flagging="manual").queue(max_size=100).launch(enable_queue=True)
+gr.Interface(fn=infer, inputs=[source_img, "text"], outputs=gallery,title=title,description=description, allow_flagging="manual", flagging_dir="flagged").queue(max_size=100).launch(enable_queue=True)
