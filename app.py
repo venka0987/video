@@ -36,13 +36,16 @@ def resize(value,img):
   return img
 
 
-def infer(source_img, prompt): 
-         
+def infer(source_img, prompt, guide, steps, seed, strength): 
+    generator = torch.Generator('cpu').manual_seed(seed)
+    
     source_image = resize(512, source_img)
     source_image.save('source.png')
-    images_list = img_pipe([prompt] * 2, init_image=source_image, strength=0.75)
+    
+    images_list = img_pipe([prompt] * 2, init_image=source_image, strength=strength, guidance_scale=guide, num_inference_steps=steps)
     images = []
     safe_image = Image.open(r"unsafe.png")
+    
     for i, image in enumerate(images_list["sample"]):
         if(images_list["nsfw_content_detected"][i]):
             images.append(safe_image)
@@ -55,4 +58,10 @@ print("Great sylvain ! Everything is working fine !")
 title="Img2Img Stable Diffusion CPU"
 description="Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
 
-gr.Interface(fn=infer, inputs=[source_img, "text"], outputs=gallery,title=title,description=description, allow_flagging="manual", flagging_dir="flagged").queue(max_size=100).launch(enable_queue=True)
+gr.Interface(fn=infer, inputs=[source_img,
+    "text",
+    gr.Slider(2, 15, value = 7, label = 'Guidence Scale'),
+    gr.Slider(10, 50, value = 25, step = 1, label = 'Number of Iterations'),
+    gr.Slider(label = "Seed", minimum = 0, maximum = 2147483647, step = 1, randomize = True),
+    gr.Slider(label='Strength', minimum = 0, maximum = 1, step = .05, value = .75)],
+    outputs=gallery,title=title,description=description, allow_flagging="manual", flagging_dir="flagged").queue(max_size=100).launch(enable_queue=True)
