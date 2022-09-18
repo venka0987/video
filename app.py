@@ -1,5 +1,5 @@
 import gradio as gr
-#import torch
+import torch
 #from torch import autocast // only for GPU
 
 from PIL import Image
