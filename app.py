@@ -56,7 +56,7 @@ def infer(source_img, prompt, guide, steps, seed, strength):
 print("Great sylvain ! Everything is working fine !")
 
 title="Img2Img Stable Diffusion CPU"
-description="Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled.</b>" 
+description="<p style='text-align: center;'>Img2Img Stable Diffusion example using CPU and HF token. <br />Warning: Slow process... ~5/10 min inference time. <b>NSFW filter enabled. <br /> <img id='visitor-badge' alt='visitor badge' src='https://visitor-badge.glitch.me/badge?page_id=gradio-blocks.sketch_frame_interpolation' style='display: inline-block'/></b></p>" 
 
 gr.Interface(fn=infer, inputs=[source_img,
     "text",
