@@ -24,7 +24,7 @@ img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("runwayml/stable-diffu
 img_pipe.to(device)
 
 source_img = gr.Image(source="upload", type="filepath", label="init_img | 512*512 px")
-gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[2], height="auto")
+gallery = gr.Gallery(label="Generated images", show_label=False, elem_id="gallery").style(grid=[1], height="auto")
 
 def resize(value,img):
   #baseheight = value
@@ -42,7 +42,7 @@ def infer(source_img, prompt, guide, steps, seed, strength):
     source_image = resize(512, source_img)
     source_image.save('source.png')
     
-    images_list = img_pipe([prompt] * 2, init_image=source_image, strength=strength, guidance_scale=guide, num_inference_steps=steps)
+    images_list = img_pipe([prompt] * 1, init_image=source_image, strength=strength, guidance_scale=guide, num_inference_steps=steps)
     images = []
     safe_image = Image.open(r"unsafe.png")
     
