@@ -20,7 +20,7 @@ device="cpu"
 #prompt_pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
 #prompt_pipe.to(device)
 
-img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=YOUR_TOKEN)
+img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", use_auth_token=YOUR_TOKEN)
 img_pipe.to(device)
 
 source_img = gr.Image(source="upload", type="filepath", label="init_img | 512*512 px")
@@ -46,7 +46,7 @@ def infer(source_img, prompt, guide, steps, seed, strength):
     images = []
     safe_image = Image.open(r"unsafe.png")
     
-    for i, image in enumerate(images_list["sample"]):
+    for i, image in enumerate(images_list["images"]):
         if(images_list["nsfw_content_detected"][i]):
             images.append(safe_image)
         else:
